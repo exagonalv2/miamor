@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Te Amo, Abril 🌸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Petit+Formal+Script&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0612;
+      --deep: #110920;
+      --rose: #e8547a;
+      --rose-soft: #f2789a;
+      --gold: #d4a96a;
+      --gold-light: #f0c98a;
+      --text: #f5eef0;
+      --muted: #9e8a92;
+      --petal: #b83a5e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── CANVAS ─── */
+    #stars-canvas {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── PETALS ─── */
+    .petal {
+      position: fixed;
+      top: -60px;
+      font-size: 1.4rem;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+      animation: fall linear infinite;
+      filter: drop-shadow(0 0 6px #e8547a88);
+    }
+
+    @keyframes fall {
+      0%   { opacity: 0; transform: translateY(0) rotate(0deg) scale(1); }
+      10%  { opacity: .8; }
+      90%  { opacity: .6; }
+      100% { opacity: 0; transform: translateY(110vh) rotate(520deg) scale(.6); }
+    }
+
+    /* ─── LAYOUT ─── */
+    main {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 3rem 1.5rem 5rem;
+      text-align: center;
+    }
+
+    /* ─── GLOW ORBS ─── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: .25;
+      animation: pulse 8s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 500px; height: 500px; background: var(--petal); top: -100px; left: -150px; }
+    .orb-2 { width: 400px; height: 400px; background: #2a0a6e; bottom: -80px; right: -120px; animation-delay: -4s; }
+
+    @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.25); } }
+
+    /* ─── HEADER ─── */
+    .eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(.9rem, 2vw, 1.05rem);
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp .9s ease forwards .3s;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.2rem 0;
+      opacity: 0;
+      animation: fadeUp .9s ease forwards .55s;
+    }
+    .divider-line {
+      height: 1px;
+      width: 80px;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+    }
+    .divider-heart { color: var(--rose); font-size: 1.1rem; animation: heartbeat 1.8s ease-in-out infinite; }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.3); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.2); }
+      70%       { transform: scale(1); }
+    }
+
+    /* ─── HEADLINE ─── */
+    .headline {
+      font-family: 'Petit Formal Script', cursive;
+      font-size: clamp(3.5rem, 12vw, 9rem);
+      line-height: 1.05;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--rose-soft) 40%, var(--gold) 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 30px #e8547a55);
+      opacity: 0;
+      animation: fadeUp 1.1s cubic-bezier(.22,.6,.36,1) forwards .8s;
+    }
+
+    .name-highlight {
+      display: block;
+      font-size: clamp(4.5rem, 16vw, 13rem);
+      background: linear-gradient(135deg, var(--rose-soft) 0%, var(--gold-light) 60%, #fff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 40px #e8547a66);
+      animation: fadeUp 1.1s cubic-bezier(.22,.6,.36,1) forwards 1.1s, shimmer 4s ease-in-out infinite 2.5s;
+      opacity: 0;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { filter: drop-shadow(0 0 40px #e8547a66); }
+      50%       { filter: drop-shadow(0 0 70px #e8547aaa) drop-shadow(0 0 20px #d4a96a88); }
+    }
+
+    /* ─── POEM ─── */
+    .poem {
+      margin: 2.5rem auto 0;
+      max-width: 480px;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.5s;
+    }
+    .poem em { color: var(--rose-soft); font-style: normal; }
+
+    /* ─── COUNTER ─── */
+    .counter-wrap {
+      margin-top: 3.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.9s;
+    }
+    .counter-label {
+      font-size: .85rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .8rem;
+    }
+    .counter-box {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .counter-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .25rem;
+      min-width: 64px;
+    }
+    .counter-num {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1;
+      min-width: 3ch;
+      text-align: center;
+      transition: color .3s;
+    }
+    .counter-sep {
+      font-size: 2rem;
+      color: var(--rose);
+      margin-bottom: 1rem;
+      align-self: flex-start;
+      padding-top: .2rem;
+    }
+    .counter-unit-label {
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── CTA BUTTON ─── */
+    .cta {
+      margin-top: 3rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 2.3s;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .85rem 2.4rem;
+      border: 1px solid #e8547a55;
+      border-radius: 999px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      letter-spacing: .12em;
+      color: var(--rose-soft);
+      background: transparent;
+      cursor: pointer;
+      transition: background .3s, border-color .3s, box-shadow .3s;
+      text-decoration: none;
+    }
+    .cta-btn:hover {
+      background: #e8547a14;
+      border-color: var(--rose);
+      box-shadow: 0 0 30px #e8547a33;
+    }
+
+    /* ─── SIGNATURE ─── */
+    .signature {
+      margin-top: 4.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 2.6s;
+      font-family: 'Petit Formal Script', cursive;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      color: var(--gold);
+      filter: drop-shadow(0 0 10px #d4a96a44);
+    }
+
+    /* ─── FLOATING HEARTS ─── */
+    .float-heart {
+      position: fixed;
+      bottom: -40px;
+      font-size: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+      animation: floatUp linear infinite;
+      filter: drop-shadow(0 0 6px #e8547aaa);
+    }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0) scale(1); }
+      20%  { opacity: .7; }
+      100% { opacity: 0; transform: translateY(-110vh) scale(.4); }
+    }
+
+    /* ─── UTILS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── MODAL ─── */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(10,6,18,.85);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .4s;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: linear-gradient(145deg, #1a0e26, #0f0918);
+      border: 1px solid #e8547a33;
+      border-radius: 1.5rem;
+      padding: 3rem 2.5rem;
+      max-width: 420px; width: 90%;
+      text-align: center;
+      transform: scale(.9);
+      transition: transform .4s cubic-bezier(.22,.6,.36,1);
+      box-shadow: 0 0 80px #e8547a22;
+    }
+    .modal-backdrop.open .modal { transform: scale(1); }
+    .modal h2 {
+      font-family: 'Petit Formal Script', cursive;
+      font-size: 2.4rem;
+      color: var(--rose-soft);
+      margin-bottom: 1rem;
+    }
+    .modal p {
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .modal-close {
+      margin-top: 1.8rem;
+      background: none;
+      border: 1px solid #e8547a55;
+      border-radius: 999px;
+      padding: .55rem 1.8rem;
+      color: var(--rose-soft);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: background .3s;
+    }
+    .modal-close:hover { background: #e8547a1a; }
+
+    @media (max-width: 480px) {
+      .counter-sep { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- Petals generated by JS -->
+
+<main>
+  <p class="eyebrow">para siempre &amp; por siempre</p>
+
+  <div class="divider">
+    <span class="divider-line"></span>
+    <span class="divider-heart">♥</span>
+    <span class="divider-line"></span>
+  </div>
+
+  <h1 class="headline">
+    te amo,
+    <span class="name-highlight">Abril</span>
+  </h1>
+
+  <p class="poem">
+    En cada amanecer que llega<br>
+    y en cada estrella que se apaga,<br>
+    solo hay un nombre que <em>mi corazón</em><br>
+    repite sin cansarse jamás.
+  </p>
+
+  <div class="counter-wrap">
+    <p class="counter-label">Tiempo juntos</p>
+    <div class="counter-box">
+      <div class="counter-unit">
+        <span class="counter-num" id="cnt-days">0</span>
+        <span class="counter-unit-label">días</span>
+      </div>
+      <span class="counter-sep">:</span>
+      <div class="counter-unit">
+        <span class="counter-num" id="cnt-hours">0</span>
+        <span class="counter-unit-label">horas</span>
+      </div>
+      <span class="counter-sep">:</span>
+      <div class="counter-unit">
+        <span class="counter-num" id="cnt-mins">0</span>
+        <span class="counter-unit-label">minutos</span>
+      </div>
+      <span class="counter-sep">:</span>
+      <div class="counter-unit">
+        <span class="counter-num" id="cnt-secs">0</span>
+        <span class="counter-unit-label">segundos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <button class="cta-btn" onclick="openModal()">
+      ♥ leer mi carta
+    </button>
+  </div>
+
+  <p class="signature">— con todo mi amor ✦</p>
+</main>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <h2>Carta para Abril</h2>
+    <p>
+      Cada día a tu lado es el regalo más hermoso
+      que la vida me ha dado. Tu risa ilumina mis días
+      oscuros, y tu presencia hace que todo tenga sentido.
+      Gracias por existir, por elegirme, y por ser
+      exactamente quien eres.<br><br>
+      <em>Te amo hoy, mañana y siempre.</em>
+    </p>
+    <button class="modal-close" onclick="closeModal()">cerrar ♥</button>
+  </div>
+</div>
+
+<script>
+  /* ─── STARS ─── */
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: Math.random(), y: Math.random(),
+      r: Math.random() * 1.2 + .2,
+      a: Math.random(),
+      s: Math.random() * .005 + .001,
+      d: Math.random() > .5 ? 1 : -1
+    });
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.a += s.s * s.d;
+      if (s.a <= 0 || s.a >= 1) s.d *= -1;
+      ctx.beginPath();
+      ctx.arc(s.x * canvas.width, s.y * canvas.height, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,230,240,${s.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  /* ─── PETALS ─── */
+  const petalEmojis = ['🌸','🌺','🌷','✿','❀'];
+  function spawnPetal() {
+    const el = document.createElement('div');
+    el.className = 'petal';
+    el.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    const dur = 6 + Math.random() * 8;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = (Math.random() * dur) + 's';
+    el.style.fontSize = (.8 + Math.random() * 1.2) + 'rem';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (dur + parseFloat(el.style.animationDelay) + 1) * 1000);
+  }
+  for (let i = 0; i < 18; i++) spawnPetal();
+  setInterval(spawnPetal, 1800);
+
+  /* ─── FLOATING HEARTS ─── */
+  function spawnHeart() {
+    const el = document.createElement('div');
+    el.className = 'float-heart';
+    el.textContent = ['♥','♡','❤️'][Math.floor(Math.random() * 3)];
+    el.style.left = Math.random() * 100 + 'vw';
+    const dur = 8 + Math.random() * 10;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = (Math.random() * 4) + 's';
+    el.style.fontSize = (.6 + Math.random() * .8) + 'rem';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (dur + 5) * 1000);
+  }
+  for (let i = 0; i < 10; i++) spawnHeart();
+  setInterval(spawnHeart, 3000);
+
+  /* ─── COUNTER ─── */
+  // ✏️  CAMBIA esta fecha por la fecha real de tu relación:
+  const START = new Date('2024-01-01T00:00:00');
+
+  function updateCounter() {
+    const now  = new Date();
+    const diff = Math.max(0, now - START);
+    const totalSecs = Math.floor(diff / 1000);
+    const secs  = totalSecs % 60;
+    const mins  = Math.floor(totalSecs / 60) % 60;
+    const hours = Math.floor(totalSecs / 3600) % 24;
+    const days  = Math.floor(totalSecs / 86400);
+
+    document.getElementById('cnt-days').textContent  = days;
+    document.getElementById('cnt-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cnt-mins').textContent  = String(mins).padStart(2,'0');
+    document.getElementById('cnt-secs').textContent  = String(secs).padStart(2,'0');
+  }
+  updateCounter();
+  setInterval(updateCounter, 1000);
+
+  /* ─── MODAL ─── */
+  function openModal()  { document.getElementById('modal').classList.add('open'); }
+  function closeModal(e) {
+    if (!e || e.target === document.getElementById('modal')) {
+      document.getElementById('modal').classList.remove('open');
+    }
+  }
+</script>
+</body>
+</html>
